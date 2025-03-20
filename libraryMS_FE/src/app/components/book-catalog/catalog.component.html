@@ -1,0 +1,41 @@
+<div class="catalog-container" @slideInOut>
+    <mat-form-field appearance="fill">
+      <mat-label>Search Books</mat-label>
+      <input matInput [(ngModel)]="searchQuery" (input)="filterBooks()">
+    </mat-form-field>
+    <table mat-table [dataSource]="filteredBooks" class="mat-elevation-z8">
+      <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef>Title</th>
+        <td mat-cell *matCellDef="let book">{{ book.title }}</td>
+      </ng-container>
+      <ng-container matColumnDef="author">
+        <th mat-header-cell *matHeaderCellDef>Author</th>
+        <td mat-cell *matCellDef="let book">{{ book.author }}</td>
+      </ng-container>
+      <ng-container matColumnDef="isbn">
+        <th mat-header-cell *matHeaderCellDef>ISBN</th>
+        <td mat-cell *matCellDef="let book">{{ book.isbn }}</td>
+      </ng-container>
+      <ng-container matColumnDef="available">
+        <th mat-header-cell *matHeaderCellDef>Available</th>
+        <td mat-cell *matCellDef="let book">{{ book.availableCopies }}</td>
+      </ng-container>
+      <ng-container matColumnDef="actions" >
+        <th mat-header-cell *matHeaderCellDef >Actions</th>
+        <td mat-cell *matCellDef="let book">
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="borrowBook(book.id)"
+            [disabled]="book.availableCopies === 0"
+            *ngIf="authService.isLoggedIn() && !authService.isAdmin()"
+          >
+            Borrow
+          </button>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+  <app-loader *ngIf="loading"></app-loader>

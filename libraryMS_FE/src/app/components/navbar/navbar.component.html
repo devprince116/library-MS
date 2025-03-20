@@ -1,0 +1,45 @@
+<mat-toolbar color="primary">
+    <span>Library Management</span>
+    <span class="spacer"></span>
+
+    <!-- Home button with active state -->
+    <button mat-button routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">
+      Catalog
+    </button>
+
+    <!-- Dashboard for regular users -->
+    <button
+      mat-button
+      routerLink="/dashboard"
+      routerLinkActive="active-link"
+      *ngIf="authService.isLoggedIn() && !authService.isAdmin()"
+    >
+      Dashboard
+    </button>
+
+    <!-- Analytics for admin users -->
+    <button
+      mat-button
+      routerLink="/admin"
+      routerLinkActive="active-link"
+      *ngIf="authService.isAdmin()"
+    >
+      Analytics
+    </button>
+
+    <!-- Profile logo and menu when logged in -->
+    <div *ngIf="authService.isLoggedIn()" class="profile-container">
+      <button mat-icon-button [matMenuTriggerFor]="profileMenu" class="profile-button">
+        <span class="profile-logo">{{ getFirstLetter() }}</span>
+      </button>
+      <mat-menu #profileMenu="matMenu">
+        <button mat-menu-item (click)="authService.logout()">Logout</button>
+      </mat-menu>
+    </div>
+
+    <!-- Login/Signup buttons when not logged in -->
+    <div *ngIf="!authService.isLoggedIn()" class="auth-buttons">
+      <button mat-button routerLink="/login">Login</button>
+      <button mat-button routerLink="/signup">Sign Up</button>
+    </div>
+  </mat-toolbar>

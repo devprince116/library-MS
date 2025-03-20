@@ -1,0 +1,20 @@
+<div class="reports-container" @slideInOut>
+    <h2>Overdue Books</h2>
+    <table mat-table [dataSource]="overdueRecords" class="mat-elevation-z8">
+      <ng-container matColumnDef="user">
+        <th mat-header-cell *matHeaderCellDef>User</th>
+        <td mat-cell *matCellDef="let record">{{ record.user.name }}</td>
+      </ng-container>
+      <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef>Book Title</th>
+        <td mat-cell *matCellDef="let record">{{ record.book.title }}</td>
+      </ng-container>
+      <ng-container matColumnDef="borrowDate">
+        <th mat-header-cell *matHeaderCellDef>Borrow Date</th>
+        <td mat-cell *matCellDef="let record">{{ record.borrowDate | date }}</td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+  <app-loader *ngIf="loading"></app-loader>
